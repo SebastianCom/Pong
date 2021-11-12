@@ -3,3 +3,17 @@
 
 #include "PongGameState.h"
 
+APongGameState::APongGameState()
+{
+}
+
+
+int APongGameState::GetNumberOfPlayerGoals()
+{
+	return NumberOfPlayerGoals;
+}		 
+int APongGameState::GetNumberOfAiGoals()
+{
+	return  NumberOfAiGoals;
+
+}

@@ -143,3 +143,8 @@ void ABall::Tick(float DeltaTime)
 
 }
 
+UPrimitiveComponent* ABall::GetPhysicsComponent()
+{
+	return Cast<UPrimitiveComponent>(BallSphereComponent);
+}
+

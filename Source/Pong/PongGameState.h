@@ -13,5 +13,17 @@ UCLASS()
 class PONG_API APongGameState : public AGameStateBase
 {
 	GENERATED_BODY()
+public:
+
+	APongGameState();
+
+	UFUNCTION(BlueprintCallable, Category = "Goals")
+		int GetNumberOfPlayerGoals();
+
+	UFUNCTION(BlueprintCallable, Category = "Goals")
+		int GetNumberOfAiGoals();
+
+	int NumberOfPlayerGoals;
+	int NumberOfAiGoals;
 	
 };
