@@ -37,16 +37,17 @@ void AAiGoal::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, FString::Printf(TEXT("Overlapping Actor = %s"), *OtherActor->GetName()));
 		}
 
-		//WEEK 7
-		//ABall* ball = Cast<ABall>(OtherActor);
+	
+		
 		if (OtherActor->IsA<ABall>())
 		{
-			//TODO reset ball velocity. May be better to make a function in ball
+			
 			OtherActor->TeleportTo(MiddleOfField->GetActorLocation(), FRotator::ZeroRotator);
 			APongGameModeBase* gameMode = Cast<APongGameModeBase>(GetWorld()->GetAuthGameMode());
 			APongGameState* gameState = gameMode->GetGameState<APongGameState>();
 			APongPlayerState* playerState = Cast<APongPlayerState>(gameState->PlayerArray[0]);
-
+			ABall* ball = Cast<ABall>(OtherActor);
+			ball->ResetVelocity();
 			playerState->NumberOfGoals++;
 	
 			if (goal == EGoal::AI)

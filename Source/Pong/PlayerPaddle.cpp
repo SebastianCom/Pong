@@ -7,7 +7,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "PaperSpriteComponent.h"
 
-//#include "Components/StaticMeshComponent.h"
 
 
 // Sets default values
@@ -35,8 +34,8 @@ APlayerPaddle::APlayerPaddle()
 	PlayerBoxComponent->GetBodyInstance()->bLockXTranslation = true;
 	
 	//Debugging ---------TURN OFF ON RELEASE--------
-	PlayerBoxComponent->SetHiddenInGame(false);
-	PlayerBoxComponent->SetVisibility(true);
+	//PlayerBoxComponent->SetHiddenInGame(false);
+	//PlayerBoxComponent->SetVisibility(true);
 	
 	SetRootComponent(PlayerBoxComponent);
 
@@ -89,7 +88,9 @@ void APlayerPaddle::BeginPlay()
 void APlayerPaddle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
 	FVector NewLocation = GetActorLocation();
+	
 	if (MovementUp != 0)
 	{
 		NewLocation = GetActorLocation() + (GetActorUpVector() * MovementUp * 5);
@@ -118,8 +119,5 @@ void APlayerPaddle::MoveDown(float value)
 void APlayerPaddle::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	//PlayerInputComponent->BindAxis("MoveUp", this, &APlayerPaddle::MoveUp);
-	//PlayerInputComponent->BindAxis("MoveDown", this, &APlayerPaddle::MoveDown);
-
 }
 

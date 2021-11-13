@@ -16,11 +16,11 @@ ATopBox::ATopBox()
 	TopBoxComponent->SetCollisionProfileName("BLockAllDynamic");
 	TopBoxComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	TopBoxComponent->SetNotifyRigidBodyCollision(true);
-	TopBoxComponent->SetHiddenInGame(false);
-	TopBoxComponent->SetVisibility(true);
 	SetRootComponent(TopBoxComponent);
 
-
+	//Debugging TURN OFF ON RELEASE
+	//TopBoxComponent->SetHiddenInGame(false);
+	//TopBoxComponent->SetVisibility(true);
 
 }
 

@@ -6,9 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "GameHUD.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class PONG_API AGameHUD : public AHUD
 {

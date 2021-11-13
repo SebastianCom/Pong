@@ -30,8 +30,8 @@ AAiPaddle::AAiPaddle()
 	AiBoxComponent->GetBodyInstance()->bLockXTranslation = true;
 
 	//Debugging ---------TURN OFF ON RELEASE--------
-	AiBoxComponent->SetHiddenInGame(false);
-	AiBoxComponent->SetVisibility(true);
+	//AiBoxComponent->SetHiddenInGame(false);
+	//AiBoxComponent->SetVisibility(true);
 
 	SetRootComponent(AiBoxComponent);
 
@@ -56,12 +56,10 @@ void AAiPaddle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	if (CurrentPoint != nullptr)
+	if (CurrentPoint != nullptr)//Handle Ai
 	{
-		//DECLARE a variable called Delta of type FVector, and Assign it to the result of:  GetActorLocation() - CurrentPatrolPoint->GetActorLocation()
 		FVector Delta = GetActorLocation() - CurrentPoint->GetActorLocation();
 		CurrentPoint = BallPoint;
-		//CALL SetActorLocation() passing in : FMath::VInterpConstantTo(GetActorLocation(), CurrentPatrolPoint->GetActorLocation(), DeltaTime, 600.f)
 		SetActorLocation(FMath::VInterpConstantTo(GetActorLocation(), CurrentPoint->GetActorLocation(), DeltaTime, 1000.f));
 	}
 }

@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+// ------------------ NOT USED IN END PRODUCT-------------------------------------------
+
 #include "BallSpawner.h"
 #include "Components/ArrowComponent.h"
 #include "Pong/Ball.h"
@@ -29,9 +31,9 @@ ABallSpawner::ABallSpawner()
 void ABallSpawner::BeginPlay()
 {
 	Super::BeginPlay();
-    //FTimerManager& Timer = GetWorldTimerManager();
-
-    //Timer.SetTimer(SpawnTimer, this, &ABallSpawner::SpawnActor, SpawnDelay, true);//may consistantly  make balls idk how this works yet
+    
+    FTimerManager& Timer = GetWorldTimerManager();
+    Timer.SetTimer(SpawnTimer, this, &ABallSpawner::SpawnActor, SpawnDelay, true);//consistantly  make balls idk how this works yet
 	
 }
 
