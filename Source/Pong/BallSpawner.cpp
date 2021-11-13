@@ -19,9 +19,9 @@ ABallSpawner::ABallSpawner()
 
     SpawnPointComponent->ArrowSize = 5.f;
 
-    SpawnPointComponent->SetRelativeRotation(FRotator(50.f, 0.f, 0.f));
+    SpawnPointComponent->SetRelativeRotation(FRotator(0.f, 29.f, -90.f));
 
-    SpawnPointComponent->SetRelativeLocation(FVector(0.f, 100.f, 0.f));
+    SpawnPointComponent->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
 
 }
 
@@ -29,9 +29,9 @@ ABallSpawner::ABallSpawner()
 void ABallSpawner::BeginPlay()
 {
 	Super::BeginPlay();
-    FTimerManager& Timer = GetWorldTimerManager();
+    //FTimerManager& Timer = GetWorldTimerManager();
 
-    Timer.SetTimer(SpawnTimer, this, &ABallSpawner::SpawnActor, SpawnDelay, true);//may consistantly  make balls idk how this works yet
+    //Timer.SetTimer(SpawnTimer, this, &ABallSpawner::SpawnActor, SpawnDelay, true);//may consistantly  make balls idk how this works yet
 	
 }
 

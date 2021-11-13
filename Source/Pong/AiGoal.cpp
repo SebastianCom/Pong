@@ -41,7 +41,7 @@ void AAiGoal::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 		//ABall* ball = Cast<ABall>(OtherActor);
 		if (OtherActor->IsA<ABall>())
 		{
-			
+			//TODO reset ball velocity. May be better to make a function in ball
 			OtherActor->TeleportTo(MiddleOfField->GetActorLocation(), FRotator::ZeroRotator);
 			APongGameModeBase* gameMode = Cast<APongGameModeBase>(GetWorld()->GetAuthGameMode());
 			APongGameState* gameState = gameMode->GetGameState<APongGameState>();
@@ -49,7 +49,7 @@ void AAiGoal::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 
 			playerState->NumberOfGoals++;
 	
-			if (goal == EGoal::Player)
+			if (goal == EGoal::AI)
 				gameState->NumberOfPlayerGoals++;
 			else
 				gameState->NumberOfAiGoals++;
