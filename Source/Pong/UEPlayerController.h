@@ -25,6 +25,7 @@ protected:
 
     void MoveUp(float value);
     void MoveDown(float value);
+    void QuitGame(float value);
 
 
     class AUEPlayerState* MyPlayerState;

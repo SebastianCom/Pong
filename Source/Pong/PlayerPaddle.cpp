@@ -93,11 +93,11 @@ void APlayerPaddle::Tick(float DeltaTime)
 	
 	if (MovementUp != 0)
 	{
-		NewLocation = GetActorLocation() + (GetActorUpVector() * MovementUp * 5);
+		NewLocation = GetActorLocation() + (GetActorUpVector() * MovementUp * (DeltaTime * 500));
 	}
 	if (MovementDown != 0)
 	{
-		NewLocation = GetActorLocation() + (GetActorUpVector() * MovementDown * 5);
+		NewLocation = GetActorLocation() + (GetActorUpVector() * MovementDown * (DeltaTime* 500));
 	}
 
 	SetActorLocation(NewLocation);

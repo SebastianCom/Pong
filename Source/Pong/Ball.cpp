@@ -6,6 +6,8 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "PaperSpriteComponent.h"
 #include "Math/UnrealMathUtility.h"
+#include "Pong/PongGameModeBase.h"
+#include "Pong/PongGameState.h"
 
 // Sets default values
 ABall::ABall()
@@ -41,10 +43,9 @@ ABall::ABall()
 	BallMovement->MaxSpeed = 5000;
 	BallMovement->Bounciness = 1.4f;
 	BallMovement->LimitVelocity(FVector(0.0f, 50000, 50000));
-	BallMovement->Velocity = FVector(0, -1000, 400);
+	//BallMovement->Velocity = FVector(0, -1000, 400);
 	BallMovement->ProjectileGravityScale = 0.0f;
 	PreviousNormal = BallMovement->PreviousHitNormal;
-
 
 
 
@@ -63,11 +64,27 @@ void ABall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (GEngine)
+	/*if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Purple, FString::Printf(TEXT("Ball Velocity: %f, %f"), BallMovement->Velocity.Y, BallMovement->Velocity.Z));
 		GEngine->AddOnScreenDebugMessage(2, 15.0f, FColor::Blue, FString::Printf(TEXT("Previous Nomral: %f, %f, %f"), BallMovement->PreviousHitNormal.X, BallMovement->PreviousHitNormal.Y, BallMovement->PreviousHitNormal.Z));
+		GEngine->AddOnScreenDebugMessage(9, 15.0f, FColor::Blue, FString::Printf(TEXT("Start Timer: %f"), StartTimer));
+	}*/
+	if (Started == false)
+	{
+		StartTimer -= DeltaTime;
 	}
+	if (StartTimer <= 0 && Started == false)
+	{
+		BallMovement->Velocity = FVector(0.0f, -220.0f, 100.0f);
+		Started = true;
+	}
+
+
+	APongGameModeBase* gameMode = Cast<APongGameModeBase>(GetWorld()->GetAuthGameMode());
+	APongGameState* gameState = gameMode->GetGameState<APongGameState>();
+
+	gameState->GSStartTimer = StartTimer;
 
 	HandleHorizontalAndVertical();
 	SecureXAxis();
@@ -114,20 +131,23 @@ void ABall::CheckIfStuckAndFix()
 //The ai likes the spuish the ball into the top and botom. 
 //He likes to play catch more than pong lol. This should stop his habbit.
 {
-	if (TickToggle == false)
+	if (Started == true)
 	{
-		PreviousLocation = GetActorLocation();
-		TickToggle = true;
-	}
-	else if (TickToggle == true)
-	{
-		if (PreviousLocation == GetActorLocation())
+		if (TickToggle == false)
 		{
-			ResetVelocity();
-			TeleportTo(MiddleOfField->GetActorLocation(), FRotator::ZeroRotator);
-			BallMovement->AddForce(FVector(0.0f, 50.0f, 50.0f));
+			PreviousLocation = GetActorLocation();
+			TickToggle = true;
 		}
-		TickToggle = false;
+		else if (TickToggle == true)
+		{
+			if (PreviousLocation == GetActorLocation())
+			{
+				ResetVelocity();
+				TeleportTo(MiddleOfField->GetActorLocation(), FRotator::ZeroRotator);
+				BallMovement->AddForce(FVector(0.0f, 50.0f, 50.0f));
+			}
+			TickToggle = false;
+		}
 	}
 }
 
@@ -150,28 +170,53 @@ void ABall::HandleHorizontalAndVertical()
 
 		if (NormalOnHit.Y == -PreviousNormal.Y && PreviousNormal.Y != 0)//Horrizontal good
 		{
-			GEngine->AddOnScreenDebugMessage(8, 5.0f, FColor::Blue, FString::Printf(TEXT("Has Become Horizontal")));
+			//GEngine->AddOnScreenDebugMessage(8, 5.0f, FColor::Blue, FString::Printf(TEXT("Has Become Horizontal")));
 			
 			if (BallMovement->Velocity.Z >= 0)
 			{
 				if (BallMovement->Velocity.Y >= 0)
 				{
+					if (BallMovement->Velocity.Y > 2000)
+					{
+						BallMovement->Velocity.Y -= 1000;
+						BallMovement->Velocity.Z += 1000.0f;
+					}
+					else
 					BallMovement->Velocity.Y -= 100;
 				}
 				else
 				{
+					if (BallMovement->Velocity.Y < -2000)
+					{
+						BallMovement->Velocity.Z += 1000;
+						BallMovement->Velocity.Y += 1000.0f;
+					}
+					else
 					BallMovement->Velocity.Y += 100;
 				}
 				BallMovement->Velocity.Z += 100.0f;
 			}
+			
 			else if (BallMovement->Velocity.Z < 0)
 			{
 				if (BallMovement->Velocity.Y >= 0)
 				{
+					if (BallMovement->Velocity.Y > 2000)
+					{
+						BallMovement->Velocity.Y -= 1000;
+						BallMovement->Velocity.Z -= 1000.0f;
+					}
+					else
 					BallMovement->Velocity.Y -= 100;
 				}
 				else
 				{
+					if (BallMovement->Velocity.Y < -2000)
+					{
+						BallMovement->Velocity.Y += 1000;
+						BallMovement->Velocity.Z -= 1000.0f;
+					}
+					else
 					BallMovement->Velocity.Y += 100;
 				}
 				BallMovement->Velocity.Z -= 100.0f;
@@ -179,17 +224,30 @@ void ABall::HandleHorizontalAndVertical()
 		}
 		else if (NormalOnHit.Z == -PreviousNormal.Z && PreviousNormal.Z != 0)//Optimized but not perfect
 		{
-			GEngine->AddOnScreenDebugMessage(8, 5.0f, FColor::Red, FString::Printf(TEXT("Has Become Vertical")));
+			//GEngine->AddOnScreenDebugMessage(8, 5.0f, FColor::Red, FString::Printf(TEXT("Has Become Vertical")));
 			
 			if (BallMovement->Velocity.Y >= 0)
 			{
 				if (BallMovement->Velocity.Z >= 0)
 				{
+					if (BallMovement->Velocity.Z > 2000)
+					{
+						BallMovement->Velocity.Z -= 1000;
+						BallMovement->Velocity.Y += 1000.0f;
+					}
+					else
 					BallMovement->Velocity.Z -= 100;
 				}
 				else
 				{
+					if (BallMovement->Velocity.Z < -2000)
+					{
+						BallMovement->Velocity.Z += 1000;
+						BallMovement->Velocity.Y += 1000.0f;
+					}
+					else
 					BallMovement->Velocity.Z += 100;
+
 				}
 				BallMovement->Velocity.Y += 100.0f;
 			}
@@ -197,13 +255,27 @@ void ABall::HandleHorizontalAndVertical()
 			{
 				if (BallMovement->Velocity.Z >= 0)
 				{
+					if (BallMovement->Velocity.Z > 2000)
+					{
+						BallMovement->Velocity.Z -= 1000;
+						BallMovement->Velocity.Y -= 1000.0f;
+					}
+					else
 					BallMovement->Velocity.Z -= 100;
 				}
 				else
 				{
+					if (BallMovement->Velocity.Z < -2000)
+					{
+						BallMovement->Velocity.Z += 1000;
+						BallMovement->Velocity.Y -= 1000.0f;
+					}
+					else
 					BallMovement->Velocity.Z += 100;
 				}
 				BallMovement->Velocity.Y -= 100.0f;
+
+
 			}
 			
 			
@@ -233,7 +305,7 @@ void ABall::SecureXAxis()//Keeps the ball on the X axis so far works decent
 	if (BallMovement->Velocity.X != 0.0f)
 	{
 
-		GEngine->AddOnScreenDebugMessage(3, 15.0f, FColor::Red, FString::Printf(TEXT("Ball X axis is not aligned")));
+		//GEngine->AddOnScreenDebugMessage(3, 15.0f, FColor::Red, FString::Printf(TEXT("Ball X axis is not aligned")));
 
 		float y = BallMovement->Velocity.Y;
 		float z = BallMovement->Velocity.Z;
@@ -245,7 +317,7 @@ void ABall::SecureXAxis()//Keeps the ball on the X axis so far works decent
 
 	if (BallMovement->Velocity.X == 0.0f)
 	{
-		GEngine->AddOnScreenDebugMessage(3, 15.0f, FColor::Green, FString::Printf(TEXT("Ball X axis is Good")));
+		//GEngine->AddOnScreenDebugMessage(3, 15.0f, FColor::Green, FString::Printf(TEXT("Ball X axis is Good")));
 	}
 }
 

@@ -17,3 +17,8 @@ int APongGameState::GetNumberOfAiGoals()
 	return  NumberOfAiGoals;
 
 }
+
+float APongGameState::GetStartTimer()
+{
+	return GSStartTimer;
+}

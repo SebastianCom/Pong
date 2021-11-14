@@ -49,4 +49,6 @@ private:
 	FVector NormalOnHit = (FVector(0.0f,0.0f,0.0f));
 	FVector PreviousLocation = (FVector(0.0f, 0.0f, 0.0f));
 	bool TickToggle = false;
+	float StartTimer = 3.0f;
+	bool Started = false;
 };

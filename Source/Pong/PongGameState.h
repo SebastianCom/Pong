@@ -22,8 +22,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Goals")
 		int GetNumberOfAiGoals();
+	
+	UFUNCTION(BlueprintCallable, Category = "Goals")
+		float GetStartTimer();
 
 	int NumberOfPlayerGoals;
 	int NumberOfAiGoals;
-	
+	float GSStartTimer;
 };

@@ -20,6 +20,10 @@ AAiGoal::AAiGoal()
 	GoalBox->SetCollisionProfileName("OverlapAllDynamic");
 	GoalBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
+	//Debugging TURN OFF ON RELEASE
+	//GoalBox->SetHiddenInGame(false);
+	//GoalBox->SetVisibility(true);
+
 	GoalBox->OnComponentBeginOverlap.AddDynamic(this, &AAiGoal::BeginOverlap);
 	GoalBox->OnComponentEndOverlap.AddDynamic(this, &AAiGoal::EndOverlap);
 
@@ -31,11 +35,11 @@ void AAiGoal::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 {
 	if (OtherActor && OtherActor != this)
 	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 1.5, FColor::Green, TEXT("Overlap Begin"));
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, FString::Printf(TEXT("Overlapping Actor = %s"), *OtherActor->GetName()));
-		}
+		//if (GEngine)
+		//{
+		//	GEngine->AddOnScreenDebugMessage(-1, 1.5, FColor::Green, TEXT("Overlap Begin"));
+		//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, FString::Printf(TEXT("Overlapping Actor = %s"), *OtherActor->GetName()));
+		//}
 
 	
 		
@@ -63,11 +67,11 @@ void AAiGoal::EndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Other
 {
 	if (OtherActor && OtherActor != this)
 	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 1.5, FColor::Green, TEXT("Overlap Ended"));
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, FString::Printf(TEXT("%s has left the Trigger Volume"), *OtherActor->GetName()));
-		}
+		//if (GEngine)
+		//{
+		//	GEngine->AddOnScreenDebugMessage(-1, 1.5, FColor::Green, TEXT("Overlap Ended"));
+		//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, FString::Printf(TEXT("%s has left the Trigger Volume"), *OtherActor->GetName()));
+		//}
 	}
 }
 
